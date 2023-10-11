@@ -15,7 +15,9 @@ export class TodoItemComponent {
 
   @Input({ required: true }) todo!: Todo;
   @Input({ required: true }) isEditing!: boolean;
+
   @Output() setEditingId: EventEmitter<string | null> = new EventEmitter();
+  
   @ViewChild('textInput') textInput?: ElementRef;
   public editingText: string = '';
 
