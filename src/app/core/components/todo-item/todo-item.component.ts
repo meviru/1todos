@@ -49,6 +49,8 @@ export class TodoItemComponent {
   }
 
   toggleTodo(): void {
-    this.todoService.toggleTodo(this.todo.id);
+    this.todoService.toggleTodo(this.todo.id).subscribe((result) => {
+      this.todoService.isTodoUpdated.next(true);
+    });
   }
 }

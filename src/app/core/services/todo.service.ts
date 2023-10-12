@@ -48,7 +48,10 @@ export class TodoService {
     this.http.delete(`${this.api_url}/todo/${id}.json`).pipe(take(1)).subscribe();
   }
 
-  toggleTodo(id: string): void {
+  toggleTodo(id: string): Observable<object> {
+    const selectedTodo = this.todos().find((todo) => { todo.id === id });
+    const isCompleted = { isCompleted: !selectedTodo?.isCompleted };
     this.todos.update(todos => todos.map(todo => todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo));
+    return this.http.patch(`${this.api_url}/todo/${id}.json`, isCompleted);
   }
 }
