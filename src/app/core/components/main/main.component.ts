@@ -34,7 +34,7 @@ export class MainComponent {
 
   ngOnInit(): void {
     this.getTodos();
-    this.todoService.isTodoAdded.subscribe((isAdded) => {
+    this.todoService.isTodoUpdated.subscribe((isAdded) => {
       if (isAdded) {
         this.getTodos();
       }

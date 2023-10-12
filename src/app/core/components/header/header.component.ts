@@ -23,7 +23,7 @@ export class HeaderComponent {
 
   onEnter(event: Event): void {
     this.todoService.addTodo(this.text).pipe(take(1)).subscribe((response) => {
-      this.todoService.isTodoAdded.next(true);
+      this.todoService.isTodoUpdated.next(true);
     });
     this.text = '';
   }

@@ -17,7 +17,7 @@ export class TodoItemComponent {
   @Input({ required: true }) isEditing!: boolean;
 
   @Output() setEditingId: EventEmitter<string | null> = new EventEmitter();
-  
+
   @ViewChild('textInput') textInput?: ElementRef;
   public editingText: string = '';
 
@@ -32,7 +32,9 @@ export class TodoItemComponent {
 
   onEdit(): void {
     this.setEditingId.emit(null);
-    this.todoService.updateTodo(this.todo.id, this.editingText);
+    this.todoService.updateTodo(this.todo.id, this.editingText).subscribe((result) => {
+      this.todoService.isTodoUpdated.next(true);
+    });
   }
 
   setEditMode(): void {

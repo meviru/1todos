@@ -12,7 +12,7 @@ export class TodoService {
 
   public api_url: string = config.api_url;
 
-  public isTodoAdded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isTodoUpdated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {
     this.todos = signal<Todo[]>([]);
@@ -37,8 +37,10 @@ export class TodoService {
     return this.http.post<Todo>(`${this.api_url}/todo.json`, newTodo);
   }
 
-  updateTodo(id: string, text: string): void {
+  updateTodo(id: string, text: string): Observable<object> {
+    const textObj = { text: text };
     this.todos.update(todos => todos.map(todo => todo.id === id ? { ...todo, text } : todo));
+    return this.http.patch(`${this.api_url}/todo/${id}.json`, textObj);
   }
 
   removeTodo(id: string): void {
