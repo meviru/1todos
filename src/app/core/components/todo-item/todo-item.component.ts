@@ -15,9 +15,12 @@ export class TodoItemComponent {
 
   @Input({ required: true }) todo!: Todo;
   @Input({ required: true }) isEditing!: boolean;
+
   @Output() setEditingId: EventEmitter<string | null> = new EventEmitter();
+
   @ViewChild('textInput') textInput?: ElementRef;
   public editingText: string = '';
+  public isError: boolean = false;
 
   ngOnInit(): void {
     this.editingText = this.todo.text;
@@ -29,8 +32,15 @@ export class TodoItemComponent {
   }
 
   onEdit(): void {
-    this.setEditingId.emit(null);
-    this.todoService.updateTodo(this.todo.id, this.editingText);
+    if (this.editingText == "" || this.editingText.trim() == "") {
+      this.isError = true;
+    } else {
+      this.setEditingId.emit(null);
+      this.todoService.updateTodo(this.todo.id, this.editingText.trim()).subscribe((result) => {
+        this.todoService.isTodoUpdated.next(true);
+      });
+      this.isError = false;
+    }
   }
 
   setEditMode(): void {
@@ -45,6 +55,8 @@ export class TodoItemComponent {
   }
 
   toggleTodo(): void {
-    this.todoService.toggleTodo(this.todo.id);
+    this.todoService.toggleTodo(this.todo.id).subscribe((result) => {
+      this.todoService.isTodoUpdated.next(true);
+    });
   }
 }

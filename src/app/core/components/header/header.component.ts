@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { TodoService } from '../../services/todo.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,9 @@ import { TodoService } from '../../services/todo.service';
 })
 export class HeaderComponent {
   public todoService = inject(TodoService);
+
   public text;
+  public isError: boolean = false;
 
   constructor() {
     this.text = '';
@@ -21,7 +24,14 @@ export class HeaderComponent {
   }
 
   onEnter(event: Event): void {
-    this.todoService.addTodo(this.text);
-    this.text = '';
+    if (this.text == "" || this.text.trim() == "") {
+      this.isError = true;
+    } else {
+      this.todoService.addTodo(this.text.trim()).pipe(take(1)).subscribe((response) => {
+        this.todoService.isTodoUpdated.next(true);
+      });
+      this.text = '';
+      this.isError = false;
+    }
   }
 }

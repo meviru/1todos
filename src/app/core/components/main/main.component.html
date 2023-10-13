@@ -1,6 +1,11 @@
 <section class="main">
     <ul class="todo-list">
-        <app-todo-item *ngFor="let todo of visibleTodos()" [todo]="todo" [isEditing]="editingId === todo.id"
-            (setEditingId)="setEditingId($event)"></app-todo-item>
+        <div class="loader-wrapper" *ngIf="isLoading; else todoList">
+            <div class="loader"></div>
+        </div>
+        <ng-template #todoList>
+            <app-todo-item *ngFor="let todo of visibleTodos()" [todo]="todo" [isEditing]="editingId === todo.id"
+                (setEditingId)="setEditingId($event)"></app-todo-item>
+        </ng-template>
     </ul>
 </section>
