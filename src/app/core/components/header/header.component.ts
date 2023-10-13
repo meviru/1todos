@@ -10,7 +10,9 @@ import { take } from 'rxjs';
 })
 export class HeaderComponent {
   public todoService = inject(TodoService);
+
   public text;
+  public isError: boolean = false;
 
   constructor() {
     this.text = '';
@@ -22,9 +24,14 @@ export class HeaderComponent {
   }
 
   onEnter(event: Event): void {
-    this.todoService.addTodo(this.text).pipe(take(1)).subscribe((response) => {
-      this.todoService.isTodoUpdated.next(true);
-    });
-    this.text = '';
+    if (this.text == "" || this.text.trim() == "") {
+      this.isError = true;
+    } else {
+      this.todoService.addTodo(this.text.trim()).pipe(take(1)).subscribe((response) => {
+        this.todoService.isTodoUpdated.next(true);
+      });
+      this.text = '';
+      this.isError = false;
+    }
   }
 }

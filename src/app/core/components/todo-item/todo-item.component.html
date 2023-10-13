@@ -5,6 +5,6 @@
         <button class="destroy" (click)="removeTodo()"></button>
     </div>
     <ng-container *ngIf="isEditing">
-        <input #textInput class="edit" type="text" [value]="editingText" (keyup)="changeText($event)" (keyup.enter)="onEdit()">
+        <input #textInput class="edit" [class.error]="isError" type="text" [value]="editingText" (keyup)="changeText($event)" (keyup.enter)="onEdit()">
     </ng-container>
 </li>

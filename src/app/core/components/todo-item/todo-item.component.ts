@@ -20,6 +20,7 @@ export class TodoItemComponent {
 
   @ViewChild('textInput') textInput?: ElementRef;
   public editingText: string = '';
+  public isError: boolean = false;
 
   ngOnInit(): void {
     this.editingText = this.todo.text;
@@ -31,10 +32,15 @@ export class TodoItemComponent {
   }
 
   onEdit(): void {
-    this.setEditingId.emit(null);
-    this.todoService.updateTodo(this.todo.id, this.editingText).subscribe((result) => {
-      this.todoService.isTodoUpdated.next(true);
-    });
+    if (this.editingText == "" || this.editingText.trim() == "") {
+      this.isError = true;
+    } else {
+      this.setEditingId.emit(null);
+      this.todoService.updateTodo(this.todo.id, this.editingText.trim()).subscribe((result) => {
+        this.todoService.isTodoUpdated.next(true);
+      });
+      this.isError = false;
+    }
   }
 
   setEditMode(): void {
