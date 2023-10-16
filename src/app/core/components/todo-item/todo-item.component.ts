@@ -36,9 +36,7 @@ export class TodoItemComponent {
       this.isError = true;
     } else {
       this.setEditingId.emit(null);
-      this.todoService.updateTodo(this.todo.id, this.editingText.trim()).subscribe((result) => {
-        this.todoService.isTodoUpdated.next(true);
-      });
+      this.todoService.updateTodo(this.todo.id, this.editingText.trim());
       this.isError = false;
     }
   }
@@ -55,8 +53,6 @@ export class TodoItemComponent {
   }
 
   toggleTodo(): void {
-    this.todoService.toggleTodo(this.todo.id).subscribe((result) => {
-      this.todoService.isTodoUpdated.next(true);
-    });
+    this.todoService.toggleTodo(this.todo.id);
   }
 }
